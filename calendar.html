@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+    <title>
+        Calendar
+    </title>
+    <link rel="stylesheet" type="text/css" href="calendar.css" />
+    <script  src="http://classes.engineering.wustl.edu/cse330/content/calendar.min.js"></script>
+    <style>
+         /* <!-- css for popup box: https://www.w3schools.com/howto/howto_css_modals.asp --> */
+        /* The Modal (background) */
+        .modal {
+          display: none; 
+          position: fixed; 
+          z-index: 1; 
+          padding-top: 100px;
+          left: 0;
+          top: 0;
+          width: 100%; 
+          height: 100%; 
+          overflow: auto; 
+          background-color: rgb(0,0,0); 
+          background-color: rgba(0,0,0,0.4); 
+        }
+        
+        
+        .modal-content {
+          background-color: #fefefe;
+          margin: auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%;
+        }
+        
+        
+        .close {
+          color: #aaaaaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+    </style>
+    </head>
+    <body>
+           <strong> Log in here:</strong> 
+            <input type="text" id="username" placeholder="Username" />
+            <input type="password" id="password" placeholder="Password" />
+            <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>" />
+            <button id="login_btn">Log In</button>
+
+            <br>
+                    <strong>Register here: </strong>
+                    <input type="text" id="newuser" placeholder="New Username" />
+                    <input type= "text" id="newuserpassword" placeholder="newuserpassword" />
+
+                
+                
+                    <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>" />
+                    <button id="createacct_btn">Register</button>
+
+                        <table class = "table" id = "table">
+                            <caption  class='month' id='month'> </caption>
+                            <tr class='dayofweek' id='dayofweek'>
+                                <th>Sunday</th>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                            </tr>
+                            <tr class='daygrid' id='daygrid'>
+                                <td id=1> </td>
+                                <td id=2> </td>
+                                <td id=3> </td>
+                                <td id=4> </td>
+                                <td id=5> </td>
+                                <td id=6> </td>
+                                <td id=7> </td>
+                            </tr>
+                            <tr class='daygrid' id='daygrid1'>
+                                    <td id=8>  </td>
+                                    <td id=9> </td>
+                                    <td id=10> </td>
+                                    <td id=11> </td>
+                                    <td id=12> </td>
+                                    <td id=13> </td>
+                                    <td id=14> </td>
+                            </tr>
+                                <tr class='daygrid' id='daygrid2'>
+                                        <td id=15> </td>
+                                        <td id=16> </td>
+                                        <td id=17> </td>
+                                        <td id=18> </td>
+                                        <td id=19> </td>
+                                        <td id=20> </td>
+                                        <td id=21> </td>
+                                    </tr>
+                                    <tr class='daygrid' id='daygrid3'>
+                                            <td id=22> </td>
+                                            <td id=23> </td>
+                                            <td id=24> </td>
+                                            <td id=25> </td>
+                                            <td id=26> </td>
+                                            <td id=27> </td>
+                                            <td id=28> </td>
+                                        </tr>
+                                        <tr class='daygrid' id='daygrid4'>
+                                                <td id=29> </td>
+                                                <td id=30> </td>
+                                                <td id=31> </td>
+                                                <td id=32> </td>
+                                                <td id=33> </td>
+                                                <td id=34> </td>
+                                                <td id=35> </td>
+                                            </tr>
+                                            <tr class='daygrid' id='daygrid5'>
+                                                    <td id=36> </td>
+                                                    <td id=37> </td>
+                                                    <td id=38> </td>
+                                                    <td id=39> </td>
+                                                    <td id=40> </td>
+                                                    <td id=41> </td>
+                                                    <td id=42> </td>
+                                               
+                        </table>
+                        <div class ="theme" id="themes">
+                            <strong> Theme: </strong>
+                            <input type="radio" name="theme" value="classic" id="classic"> Classic 
+                            <input type="radio" name="theme" value="night" id ="night" > Night Mode
+                            <input type="radio" name="theme" value="slime" id ="slatt" > Slime
+                            </div>
+                                               
+
+            <input type="submit" value="Previous Month" id="previous_month_btn"/>            
+            <input type="submit" value="Next Month" id="next_month_btn"/>
+
+            <br>
+            <br>
+
+            <strong> Add an Event to Your Calendar!</strong>
+            <br>
+
+            <label for="title"> Title of Event:</label>
+            <input type="text" name="title" id="title" />
+
+            <label for="date"> Date of Event:</label>
+            <input type="text" name="date" id="date" placeholder="YYYY-MM-DD"/>
+
+            <label for="time"> Time of Event:</label>
+            <input type="text" name="time" id="time" placeholder="HH:MM:SS"/>
+
+<br>
+
+            <label for="birthday"> Is your event:</label>
+            <input type="checkbox" name="birthday" value="Birthday" id="birthday" /> Important
+<br>
+            <label for="group"> Type in username of another user to make a group event: </label>
+            <input type="text" name="group" id="group" placeholder="Optional"/>
+
+            <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>" />
+
+            <button id="event_btn">Add Event</button>
+
+            <br>
+            <br>
+            
+           
+            <div id=customtheme>
+                <strong>Custom Theme </strong>
+                    Background Color
+                <select name= "Background Color" id= "bk"> 
+                    <option value="black">Black</option>
+                    <option value="blue">Blue</option>
+                    <option value="Green">Green</option>
+                    <option value="White">White</option>
+                </select>
+                Text Color
+                <select name= "Text Color" id = "txt"> 
+                    <option value="black">Black</option>
+                    <option value="blue">Blue</option>
+                    <option value="Green">Green</option>
+                    <option value="White">White</option>
+                </select>
+                Week Color
+                <select name= "Week Color" id ="wk"> 
+                    <option value="black">Black</option>
+                    <option value="blue">Blue</option>
+                    <option value="Green">Green</option>
+                    <option value="White">White</option>
+                </select>
+                Day Color
+                <select name= "Day Color" id="day"> 
+                    <option value="black">Black</option>
+                    <option value="blue">Blue</option>
+                    <option value="Green">Green</option>
+                    <option value="White">White</option>
+                </select>
+
+                <button id="newTheme">Change Theme</button>
+            </div>
+            <input type='submit' value='Logout' id='logout_btn'/>
+    <script>
+
+
+
+
+let usernamelog = null;
+let loggedin = true
+if(username == null){
+let loggedin = false;     
+}
+else{
+
+}
+let currentMonth = new Month(2019, 9);
+const month = document.getElementById("month");
+
+        document.getElementById("classic").addEventListener("click", classictheme, false);
+        function classictheme(){
+            
+            document.getElementById('table').style.backgroundColor="blue";
+            document.getElementById('table').style.color="black";
+            document.getElementById('dayofweek').style.backgroundColor="burlywood";
+            document.getElementById('daygrid').style.backgroundColor="cadetblue";
+            document.getElementById('daygrid1').style.backgroundColor="cadetblue";
+            document.getElementById('daygrid2').style.backgroundColor="cadetblue";
+            document.getElementById('daygrid3').style.backgroundColor="cadetblue";
+            document.getElementById('daygrid4').style.backgroundColor="cadetblue";
+            document.getElementById('daygrid5').style.backgroundColor="cadetblue";
+        }
+        document.getElementById("night").addEventListener("click", nightmode, false);
+        function nightmode(){
+            
+            document.getElementById('table').style.backgroundColor="black";
+            
+            document.getElementById('table').style.color="rgb(66, 221, 169)";
+            document.getElementById('month').style.color = "black";
+            
+            document.getElementById('dayofweek').style.backgroundColor="rgb(41, 39, 34)";
+            document.getElementById('daygrid').style.backgroundColor="#100166";
+            document.getElementById('daygrid1').style.backgroundColor="#100166";
+            document.getElementById('daygrid2').style.backgroundColor="#100166";
+            document.getElementById('daygrid3').style.backgroundColor="#100166";
+            document.getElementById('daygrid4').style.backgroundColor="#100166";
+            document.getElementById('daygrid5').style.backgroundColor="#100166";
+        }
+        document.getElementById("slatt").addEventListener("click", slimetheme, false);
+        function slimetheme(){
+            
+            document.getElementById('table').style.backgroundColor="chartreuse";
+            document.getElementById('table').style.color="black";
+            document.getElementById('dayofweek').style.backgroundColor="green";
+            document.getElementById('daygrid').style.backgroundColor="rgba(10, 224, 106, 0.87)";
+            document.getElementById('daygrid1').style.backgroundColor="rgba(10, 224, 106, 0.87)";
+            document.getElementById('daygrid2').style.backgroundColor="rgba(10, 224, 106, 0.87)";
+            document.getElementById('daygrid3').style.backgroundColor="rgba(10, 224, 106, 0.87)";
+            document.getElementById('daygrid4').style.backgroundColor="rgba(10, 224, 106, 0.87)";
+            document.getElementById('daygrid5').style.backgroundColor="rgba(10, 224, 106, 0.87)";
+        }
+let newtheme = document.getElementById("newTheme");
+newtheme.addEventListener("click", addtheme, false);
+function addtheme(){
+    let background = document.getElementById("bk");
+    document.getElementById('table').style.backgroundColor=background.value;
+
+    let text = document.getElementById("txt");
+    document.getElementById('table').style.color=text.value;
+
+    let week = document.getElementById("wk");
+    document.getElementById('dayofweek').style.backgroundColor=week.value;
+
+    let day = document.getElementById("day").value;
+    document.getElementById('daygrid').style.backgroundColor=day;
+            document.getElementById('daygrid1').style.backgroundColor=day;
+            document.getElementById('daygrid2').style.backgroundColor=day;
+            document.getElementById('daygrid3').style.backgroundColor=day;
+            document.getElementById('daygrid4').style.backgroundColor=day;
+            document.getElementById('daygrid5').style.backgroundColor=day;
+
+
+}
+classictheme();
+
+
+
+function getDays(month){
+
+    if(month==0 || month==2 || month==4 || month==6 || month==7 || month==9 || month==11){
+        return 31;
+    }
+    else if(month!=1){
+        return 30;
+    }
+    else{
+        if(currentMonth.year%4!=0){
+            return 28;
+        }
+        else{
+            return 29;
+        }
+    }
+}
+
+updateCalendar();
+
+function getname(month){
+    if(month==0){
+        return "January";
+    }
+    if(month==1){
+        return "February";
+    }
+    if(month==2){
+        return "March";
+    }
+    if(month==3){
+        return "April";
+    }
+    if(month==4){
+        return "May";
+    }
+    if(month==5){
+        return "June";
+    }
+    if(month==6){
+        return "July";
+    }
+    if(month==7){
+        return "August";
+    }
+    if(month==8){
+        return "September";
+    }
+    if(month==9){
+        return "October";
+    }
+    if(month==10){
+        return "November";
+    }
+    if(month==11){
+        return "December";
+    }
+}
+
+function updateCalendar(){
+    let days = 0;
+    let startingday = 0;
+
+    if(month.firstChild!=null){
+    month.removeChild(month.lastChild);
+    }
+
+
+    month.appendChild(document.createTextNode(getname(currentMonth.month)+" "+currentMonth.year));
+
+            dayzero = getDayZero();
+            let diff = getDays(currentMonth.prevMonth().month) - dayzero;
+            days = getDays(currentMonth.month);
+            if(dayzero!=1){
+                startingday = diff+2;
+                }
+            else{
+                startingday = 1;
+        }
+    
+
+    let titles_array = new Array();
+    let years_array = new Array();
+    let months_array = new Array();
+    let days_array = new Array();
+    let times_array = new Array();
+    let num = 0;
+    if(loggedin==true){
+    fetch("events.php", {
+            method: 'POST',
+        })
+        
+        .then(response => response.json())
+        .then(function(data){
+    
+            
+
+            for(i=0;i<data.num;i++){
+
+            if(currentMonth.year==data.year[i]){
+                if(currentMonth.month==data.month[i]){
+                    dayzero = getDayZero();
+                    diff = getDays(currentMonth.prevMonth().month) - dayzero;
+                    days = getDays(currentMonth.month);
+                    if(dayzero!=1){
+                        start = diff+2;
+                    }
+                    else{
+                        start = 1;
+                    }
+
+// used code for popup box below: https://www.w3schools.com/howto/howto_css_modals.asp
+document.getElementById(start+data.day[i]-1).appendChild(document.createElement("br"));
+                    document.getElementById(start+data.day[i]-1).appendChild(document.createTextNode(data.title[i]));
+                    let popup_btn = document.getElementById(start+data.day[i]-1).appendChild(document.createElement("button", id="myBtn"));
+                    popup_btn.appendChild(document.createTextNode("See Event"));
+
+        let bigdiv = document.createElement("div");
+        bigdiv.id = "myModal"+i;
+        bigdiv.classList.add("modal");
+
+var span = document.getElementsByClassName("close")[0];
+
+popup_btn.onclick = function() {
+  bigdiv.style.display = "block";
+}
+
+window.addEventListener("click", closepopup, false);
+function closepopup(){
+  if (event.target == bigdiv) {
+    bigdiv.style.display = "none";
+  }
+}
+  
+                    let div = document.createElement("div");
+                    div.id = "pop"+i;
+                    div.classList.add("modal-content");
+                   let p = document.createElement("div");
+                   p.id = "par"+i;
+                   div.appendChild(p);
+                   bigdiv.appendChild(div);
+                   document.getElementById(start+data.day[i]-1).appendChild(bigdiv);
+
+                    p.appendChild(document.createTextNode(data.title[i]));
+
+
+                    if(data.birthday[i]==1){
+                    document.getElementById("pop"+i).appendChild(document.createTextNode("This event is important!"));
+
+                }
+                    let delete_btn = document.createElement("button");
+                    delete_btn.appendChild(document.createTextNode("Delete"));
+                    delete_btn.addEventListener('click', removeevent, false);
+                    delete_btn.eventidnum = data.eventid[i];
+
+
+                    let edittitle_box = document.createElement("input");
+                    edittitle_box.setAttribute("id", "titlebox" + data.eventid[i]);
+                    edittitle_box.setAttribute("type", "text");
+                    edittitle_box.setAttribute("value", data.title[i]);
+                    edittitle_box.eventidnum = data.eventid[i];
+
+                    let editdate_box = document.createElement("input");
+                    editdate_box.setAttribute("id", "datebox" + data.eventid[i]);
+                    editdate_box.setAttribute("type", "text");
+                    editdate_box.setAttribute("value", data.year[i]+"-"+data.month[i]+"-"+data.day[i]);
+                    editdate_box.eventidnum = data.eventid[i];
+
+                    let edittime_box = document.createElement("input");
+                    edittime_box.setAttribute("id", "timebox" + data.eventid[i]);
+                    edittime_box.setAttribute("type", "text");
+                    edittime_box.setAttribute("value", data.time[i]);
+                    edittime_box.eventidnum = data.eventid[i];
+                    
+                    let editbirthday_box = document.createElement("input");
+                    editbirthday_box.setAttribute("id", "birthdaybox" + data.eventid[i]);
+                    editbirthday_box.setAttribute("type", "checkbox");
+                    if(data.birthday[i]==1){
+                        editbirthday_box.click();
+                    }
+                    editbirthday_box.eventidnum = data.eventid[i];
+
+                    let edit_btn = document.createElement("button");
+                    edit_btn.appendChild(document.createTextNode("Edit"));
+                    edit_btn.addEventListener('click', editevent, false);
+                    edit_btn.eventidnum = data.eventid[i];
+
+                    function editevent(event){
+                        event.preventDefault();
+                        console.log("this should only print once");
+
+                        let eventid = event.target.eventidnum;
+                        let title = document.getElementById("titlebox" + eventid).value; 
+                        let date = document.getElementById("datebox" + eventid).value; 
+                        let time = document.getElementById("timebox" + eventid).value; 
+                        let birthday = document.getElementById("birthdaybox" + eventid).checked;
+                        console.log(time);
+                        console.log(birthday);
+
+                        let data = { 'title': title, 'date': date, 'time': time, 'eventid':eventid, 'birthday':birthday};
+                         let path = 'editevent.php';
+                            fetch(`./editevent.php`, {
+                                method: 'POST',
+                                    body: JSON.stringify(data),
+                                    headers: { 
+                                    'content-type': 'application/json',
+                                    'Accept': 'application/json'
+                                    }
+                                    })
+                                    .then((data) => {
+                                    updateCalendar()
+                                    });
+                                    
+                    }
+                   
+                
+                    
+                    function removeevent(event) {
+                        event.preventDefault();
+                        let eventid = event.target.eventidnum;
+                        
+
+
+                        let data = { 'eventid': eventid};
+                         let path = 'deleteevent_ajax.php';
+                            fetch(`./deleteevent_ajax.php`, {
+                                method: 'POST',
+                                    body: JSON.stringify(data),
+                                    headers: { 
+                                    'content-type': 'application/json',
+                                    'Accept': 'application/json'
+                                    }
+                                    })
+                                    .then(response => response.json())
+                                        .then((data) => {
+                                    updateCalendar()
+                                    });
+                    }
+                    let token = document.createElement("input");
+                    token.setAttribute("type", "hidden");
+                    token.setAttribute("value", "<?php echo $_SESSION['token'];?>");
+
+                    document.getElementById("pop"+i).appendChild(token);
+                    document.getElementById("pop"+i).appendChild(delete_btn);
+                    document.getElementById("pop"+i).appendChild(edittitle_box);
+                    document.getElementById("pop"+i).appendChild(editdate_box);
+                    document.getElementById("pop"+i).appendChild(edittime_box);
+                    document.getElementById("pop"+i).appendChild(editbirthday_box);
+                    document.getElementById("pop"+i).appendChild(token);
+                    document.getElementById("pop"+i).appendChild(edit_btn);
+                }
+            }
+
+
+                
+            }
+
+        })
+    }
+    for(j=1;j<43;j++){
+    while(document.getElementById(j).firstChild!=null){
+        document.getElementById(j).removeChild(document.getElementById(j).lastChild);
+}
+}
+for(b=1;b<days+1;b++){
+
+document.getElementById(startingday).appendChild(document.createTextNode(b));
+
+
+
+startingday++;}
+}
+
+function getDayZero(){
+    var weeks = currentMonth.getWeeks();
+    let a = 0;
+    let dayzero = 0;
+	for(var w in weeks){
+        var days = weeks[w].getDates();
+        if(a==0){
+            dayzero = days[0].getDate();}
+        a++;}
+        a=0;
+        return dayzero;
+}
+
+function nextMonth(event){
+    currentMonth=currentMonth.nextMonth();
+    updateCalendar();
+
+}
+
+function previousMonth(){
+    currentMonth = currentMonth.prevMonth();
+    updateCalendar();
+
+
+ }
+
+
+document.getElementById("previous_month_btn").addEventListener("click", previousMonth, false);
+
+document.getElementById("next_month_btn").addEventListener("click", function(event){
+    
+	nextMonth();
+}, false);
+
+        
+document.getElementById("login_btn").addEventListener("click", login, false);
+document.getElementById("createacct_btn").addEventListener("click", createacct, false);
+document.getElementById("event_btn").addEventListener("click", addevent, false);
+document.getElementById("logout_btn").addEventListener("click", logout, false);
+
+function login(event) {
+    event.preventDefault();
+    let username = document.getElementById("username").value; // Get the username from the form
+    let password = document.getElementById("password").value; // Get the password from the form
+
+
+    
+    let data = { 'username': username, 'password': password };
+    let path = 'login_ajax.php';
+    fetch(`./login_ajax.php`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 
+                'content-type': 'application/json',
+                'Accept': 'application/json'
+         }
+        })
+        .then(response => response.json())
+        .then((data) => {
+            console.log(data);
+            alert(data.success ? "Hello " + username + " you've been logged in!" : `You were not logged in ${data.message}`)
+            usernamelog = username
+            if(data.success){
+                loggedin = true;
+            }
+            updateCalendar();
+        })
+    }
+
+
+
+    function logout() {
+       
+
+
+    
+    // Make a URL-encoded string for passing POST data:
+        let data = { 'username': username, 'password': password };
+        let path = 'logout_ajax.php';
+        fetch(`./logout_ajax.php`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 
+                'content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }).then(res => res.json())
+        .then((data) => {
+            if(data.success){
+                loggedin = false;
+                alert(data.message);
+            }
+            updateCalendar();
+        }).catch(err => console.error(err));
+        
+        
+
+    }
+
+    function clearCalendar(){
+        for(j=1;j<43;j++){
+    while(document.getElementById(j).firstChild!=null){
+        document.getElementById(j).removeChild(document.getElementById(j).lastChild);
+}
+    }
+    
+    dayzero = getDayZero();
+            let diff = getDays(currentMonth.prevMonth().month) - dayzero;
+            days = getDays(currentMonth.month);
+            if(dayzero!=1){
+                startingday = diff+2;
+                }
+            else{
+                startingday = 1;
+        }
+
+
+    for(b=1;b<days+1;b++){
+
+document.getElementById(startingday).appendChild(document.createTextNode(b));
+
+startingday++;
+
+
+}
+
+}
+
+function createacct(event) {
+    event.preventDefault();
+    let username = document.getElementById("newuser").value; // Get the username from the form
+    let password = document.getElementById("newuserpassword").value; // Get the password from the form
+
+    // Make a URL-encoded string for passing POST data:
+    let data = { 'username': username, 'password': password };
+    let path = 'createacct_ajax.php';
+    fetch(`./createacct_ajax.php`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 
+                'content-type': 'application/json',
+                'Accept': 'application/json'
+         }
+        })
+        
+
+    }
+
+
+    function addevent(event) {
+    event.preventDefault();
+    let title = document.getElementById("title").value; 
+    let date = document.getElementById("date").value; 
+    let time = document.getElementById("time").value; 
+    let birthday = document.getElementById("birthday").checked; 
+
+    if(document.getElementById("group").value != null){
+        let groupuser = document.getElementById("group").value;
+
+        let data = { 'title': title, 'date': date, 'time': time, 'birthday': birthday, 'groupuser': groupuser};
+    let path = 'addgroupevent_ajax.php';
+    fetch(`./addgroupevent_ajax.php`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 
+                'content-type': 'application/json',
+                'Accept': 'application/json'
+         }
+        })
+        .then(response => response.json())
+
+        }
+
+    let data = { 'title': title, 'date': date, 'time': time, 'birthday': birthday};
+    let path = 'addevent_ajax.php';
+    fetch(`./addevent_ajax.php`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 
+                'content-type': 'application/json',
+                'Accept': 'application/json'
+         }
+        })
+        .then(response => response.json())
+        .then((data) => {
+            updateCalendar()
+        });
+
+    }
+
+
+    </script>
+    </body>
+    </html>
